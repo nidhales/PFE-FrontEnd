@@ -6,10 +6,11 @@ export interface ParsedUser {
   email: string;
   password: string;
   role: string;
+  image: string;
   __v: number;
   badges: string[];
 }
 
 export interface EditTabProps {
-    parsedUser: ParsedUser
+  parsedUser: ParsedUser;
 }

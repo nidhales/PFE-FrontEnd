@@ -59,8 +59,12 @@ function ManagementUserSettings() {
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'activity' && <ActivityTab />}
-            {currentTab === 'edit_profile' && <EditProfileTab parsedUser={parsedUser} />}
+            {currentTab === 'activity' && (
+              <ActivityTab parsedUser={parsedUser} />
+            )}
+            {currentTab === 'edit_profile' && (
+              <EditProfileTab parsedUser={parsedUser} />
+            )}
           </Grid>
         </Grid>
       </Container>

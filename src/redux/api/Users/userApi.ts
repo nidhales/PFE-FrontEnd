@@ -59,7 +59,8 @@ export const userApi = createApi({
           LastName: body.LastName,
           PhoneNumber: body.PhoneNumber,
           email: body.email,
-          password: body.password
+          password: body.password,
+          
         }
       }),
       invalidatesTags: ['Users']

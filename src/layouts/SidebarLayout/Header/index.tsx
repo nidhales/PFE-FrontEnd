@@ -18,6 +18,7 @@ import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import HeaderButtons from './Buttons';
 import HeaderUserbox from './Userbox';
 import HeaderMenu from './Menu';
+import { ParsedUser } from 'src/content/applications/Users/settings/Edit.interfaces';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -41,6 +42,7 @@ const HeaderWrapper = styled(Box)(
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
+  const parsedUser: ParsedUser = JSON.parse(localStorage.getItem('user'));
 
   return (
     <HeaderWrapper
@@ -72,7 +74,7 @@ function Header() {
       </Stack>
       <Box display="flex" alignItems="center">
         <HeaderButtons />
-        <HeaderUserbox />
+        <HeaderUserbox parsedUser={parsedUser} />
         <Box
           component="span"
           sx={{

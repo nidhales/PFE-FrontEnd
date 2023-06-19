@@ -6,6 +6,8 @@ export interface UserData {
   LastName: string;
   PhoneNumber: string;
   email: string;
+  badges: Badge;
+  image: string;
 }
 
 export interface UserBadgeRequest {
@@ -22,8 +24,9 @@ export interface UserBadgeDecoderResponse {
   role: string;
   __v: number;
   badges: Badge;
+  image: string;
 }
-interface Badge {
+export interface Badge {
   _id: string;
   name: string;
   __v: number;
@@ -53,6 +56,7 @@ export interface UpdateUserRequest {
   PhoneNumber: string;
   email: string;
   password: string;
+  image: string;
 }
 
 export interface AddUserResponse<T> {
@@ -70,7 +74,9 @@ export const decodeUsersResponse = (
     FirstName: user.FirstName,
     LastName: user.LastName,
     PhoneNumber: user.PhoneNumber,
-    email: user.email
+    email: user.email,
+    badges: user.badges,
+    image: user.image
   }));
 
   return users;

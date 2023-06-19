@@ -208,13 +208,6 @@ function WatchListColumn() {
                   >
                     Like
                   </Button>
-                  <Button
-                    color="success"
-                    startIcon={<ShareTwoToneIcon />}
-                    variant="outlined"
-                  >
-                    Share
-                  </Button>
                 </Box>
                 <Box display="flex" sx={{ mt: { xs: 2, md: 0 } }}>
                   <Typography variant="subtitle2" component="span">

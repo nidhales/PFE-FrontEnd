@@ -28,6 +28,7 @@ import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
 import axios, { AxiosResponse } from 'axios';
 import { SearchResult } from './searchinterface';
 import { Link } from 'react-router-dom';
+import { IError } from 'src/models/ErrorModel';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
@@ -81,11 +82,11 @@ function HeaderSearch() {
       }
 
       try {
-        const response: AxiosResponse<SearchResult[]> = await axios.post(
+        const response: AxiosResponse<IError[]> = await axios.post(
           'http://localhost:3000/error/search',
           { name: query }
         );
-        const searchResults: SearchResult[] = response.data;
+        const searchResults: IError[] = response.data;
 
         setSearchResults(searchResults);
       } catch (error) {

@@ -22,6 +22,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import { EditTabProps } from 'src/content/applications/Users/settings/Edit.interfaces';
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
           padding-left: ${theme.spacing(1)};
@@ -57,7 +58,7 @@ const UserBoxDescription = styled(Typography)(
   `
 );
 
-function HeaderUserbox() {
+function HeaderUserbox({ parsedUser }: EditTabProps) {
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -94,9 +95,13 @@ function HeaderUserbox() {
       >
         <Avatar variant="rounded">
           <img
-            src="/static/images/avatars/avatarNidhal.png"
-            style={{ width: '50px', height: '50px', marginTop: '10px' }}
-          />
+            src={parsedUser.image}
+            style={{
+              borderRadius: '50%',
+              width: '50px',
+              height: '50px'
+            }}
+          />{' '}
         </Avatar>
         <Hidden mdDown>
           <UserBoxText>
@@ -126,7 +131,16 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" />
+          <Avatar variant="rounded">
+            <img
+              src={parsedUser.image}
+              style={{
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px'
+              }}
+            />
+          </Avatar>
           <UserBoxText>
             <UserBoxLabel variant="body1">
               {' '}

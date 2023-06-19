@@ -32,38 +32,38 @@ function BottomBarContent() {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg'
   };
- const [username, setUsername] = useState('username');
- const [messages, setMessages] = useState([]);
- const [message, setMessage] = useState('');
- let allMessages = [];
+  const [username, setUsername] = useState('username');
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
+  let allMessages = [];
 
- useEffect(() => {
-   console.log('Pusher logging enabled');
+  useEffect(() => {
+    console.log('Pusher logging enabled');
 
-   const pusher = new Pusher('96292b410eff59663717', {
-     cluster: 'eu'
-   });
-   const channel = pusher.subscribe('chat');
-   channel.bind('message', function (data) {
-     allMessages.push(data);
-     setMessages(allMessages);
-   });
- }, []);
+    const pusher = new Pusher('96292b410eff59663717', {
+      cluster: 'eu'
+    });
+    const channel = pusher.subscribe('chat');
+    channel.bind('message', function (data) {
+      allMessages.push(data);
+      setMessages(allMessages);
+    });
+  }, []);
 
- const submit = async (e) => {
-   e.preventDefault();
+  const submit = async (e) => {
+    e.preventDefault();
 
-   await fetch('http://localhost:3000/pusher/messages', {
-     method: 'POST',
-     headers: { 'Content-Type': 'application/json' },
-     body: JSON.stringify({
-       username,
-       message
-     })
-   });
+    await fetch('http://localhost:3000/pusher/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username,
+        message
+      })
+    });
 
-   setMessage('');
- };
+    setMessage('');
+  };
   return (
     <Box
       sx={{
@@ -74,11 +74,8 @@ function BottomBarContent() {
       }}
     >
       <Box flexGrow={1} display="flex" alignItems="center">
-        <Avatar
-          sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }}
-          alt={user.name}
-          src={user.avatar}
-        />
+        <Avatar src="/static/images/avatars/1.jpg" />
+
         <MessageInputWrapper
           autoFocus
           placeholder="Write your message here..."

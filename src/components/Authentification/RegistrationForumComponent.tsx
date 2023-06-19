@@ -7,9 +7,8 @@ import {
   Button,
   Divider
 } from '@mui/material';
-import { FC, FormEvent, useState } from 'react';
+import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { NewUser } from 'src/models/NewUser';
 import { Formik, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import useInput from 'src/models/use-input';
@@ -26,12 +25,20 @@ const RegistrationForumComponent: FC = () => {
   } = useInput(validatePasswordLength);
 
   const initialValues: FormikValues = {
-    name: '',
+    FirstName: '',
+    LastName: '',
+    PhoneNumber: '',
     email: '',
     password: ''
   };
   const validationSchema = Yup.object().shape({
-    name: Yup.string()
+    FirstName: Yup.string()
+      .required('Name is required')
+      .min(2, 'Namme must be at least 2 characters'),
+    LastName: Yup.string()
+      .required('Name is required')
+      .min(2, 'Namme must be at least 2 characters'),
+    PhoneNumber: Yup.string()
       .required('Name is required')
       .min(2, 'Namme must be at least 2 characters'),
     email: Yup.string()
@@ -48,14 +55,14 @@ const RegistrationForumComponent: FC = () => {
 
   const onSubmitHandler = async (values: FormikValues) => {
     await register({
-      name: values.name,
+      FirstName: values.FirstName,
+      LastName: values.LastName,
+      PhoneNumber: values.PhoneNumber,
       email: values.email,
       password: values.password
     })
       .unwrap()
-      .then((payload) =>
-      navigate('/')
-      );
+      .then((payload) => navigate('/'));
   };
 
   return (
@@ -94,9 +101,9 @@ const RegistrationForumComponent: FC = () => {
                   marginTop: 1,
                   color: '#000000'
                 }}
-                htmlFor="name"
+                htmlFor="FirstName"
               >
-                Your name
+                First Name
               </InputLabel>
 
               <TextField
@@ -104,13 +111,73 @@ const RegistrationForumComponent: FC = () => {
                   width: '100%'
                 }}
                 type="text"
-                name="name"
-                id="name"
+                name="FirstName"
+                id="FirstName"
                 variant="outlined"
                 size="small"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.name}
+                value={values.FirstName}
+                error={!!(touched.name && errors.name)}
+                helperText={
+                  touched.name && errors.name ? JSON.stringify(errors.name) : ''
+                }
+              />
+
+              <InputLabel
+                sx={{
+                  fontWeight: 'bold',
+                  fontStyle: 'italic',
+                  marginTop: 1,
+                  color: '#000000'
+                }}
+                htmlFor="LastName"
+              >
+                Last Name
+              </InputLabel>
+
+              <TextField
+                sx={{
+                  width: '100%'
+                }}
+                type="text"
+                name="LastName"
+                id="LastName"
+                variant="outlined"
+                size="small"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.LastName}
+                error={!!(touched.name && errors.name)}
+                helperText={
+                  touched.name && errors.name ? JSON.stringify(errors.name) : ''
+                }
+              />
+
+              <InputLabel
+                sx={{
+                  fontWeight: 'bold',
+                  fontStyle: 'italic',
+                  marginTop: 1,
+                  color: '#000000'
+                }}
+                htmlFor="PhoneNumber"
+              >
+                Phone Number
+              </InputLabel>
+
+              <TextField
+                sx={{
+                  width: '100%'
+                }}
+                type="text"
+                name="PhoneNumber"
+                id="PhoneNumber"
+                variant="outlined"
+                size="small"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.PhoneNumber}
                 error={!!(touched.name && errors.name)}
                 helperText={
                   touched.name && errors.name ? JSON.stringify(errors.name) : ''

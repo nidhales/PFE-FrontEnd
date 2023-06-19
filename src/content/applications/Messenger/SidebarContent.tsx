@@ -2,8 +2,6 @@ import { useState, ChangeEvent, useEffect } from 'react';
 import {
   Box,
   Typography,
-  FormControlLabel,
-  Switch,
   Tabs,
   Tab,
   TextField,
@@ -11,23 +9,20 @@ import {
   InputAdornment,
   Avatar,
   List,
-  Button,
-  Tooltip,
   Divider,
-  AvatarGroup,
   ListItemButton,
   ListItemAvatar,
   ListItemText,
   lighten,
   styled
 } from '@mui/material';
-import { formatDistance, subMinutes, subHours } from 'date-fns';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import Label from 'src/components/Label';
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
-import { Link as RouterLink } from 'react-router-dom';
+import { ChatMessage } from 'src/content/pages/Components/chat';
+import axios from 'axios';
+import { EditTabProps } from '../Users/settings/Edit.interfaces';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -92,7 +87,7 @@ const TabsContainerWrapper = styled(Box)(
   `
 );
 
-function SidebarContent() {
+function SidebarContent({ parsedUser }: EditTabProps) {
   const [state, setState] = useState({
     invisible: true
   });
@@ -125,10 +120,34 @@ function SidebarContent() {
     }
   }, []);
 
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  useEffect(() => {
+    fetchChatMessages();
+  }, []);
+
+  const fetchChatMessages = async () => {
+    try {
+      const response = await axios.get<ChatMessage[]>(
+        `http://localhost:3000/chat/6489b414b4cfa14b403df4cf/648a58d1f7a89cb075c8dcc6`
+      );
+      setMessages(response.data);
+    } catch (error) {
+      console.log('Error fetching chat messages:', error);
+    }
+  };
   return (
     <RootWrapper>
       <Box display="flex" alignItems="flex-start">
-        <Avatar alt={`${user?.FirstName} ${user?.LastName}`} />
+        <Avatar variant="rounded">
+          <img
+            src={parsedUser.image}
+            style={{
+              borderRadius: '50%',
+              width: '50px',
+              height: '50px'
+            }}
+          />{' '}
+        </Avatar>{' '}
         <Box
           sx={{
             ml: 1.5,
@@ -144,14 +163,6 @@ function SidebarContent() {
               <Typography variant="h5" noWrap>
                 {`${user?.FirstName} ${user?.LastName}`}
               </Typography>
-              <div
-                style={{
-                  width: '10px',
-                  height: '10px',
-                  backgroundColor: 'green',
-                  borderRadius: '50%'
-                }}
-              ></div>
             </Box>
             <IconButton
               // sx={{
@@ -163,18 +174,6 @@ function SidebarContent() {
               <SettingsTwoToneIcon fontSize="small" />
             </IconButton>
           </Box>
-
-          <FormControlLabel
-            control={
-              <Switch
-                checked={state.invisible}
-                onChange={handleChange}
-                name="invisible"
-                color="primary"
-              />
-            }
-            label="Invisible"
-          />
         </Box>
       </Box>
 
@@ -243,75 +242,9 @@ function SidebarContent() {
                 primary="Zain Baptista"
                 secondary="Hey there, how are you today? Is it ok if I call you?"
               />
-              <Label color="primary">
+              {/* <Label color="primary">
                 <b>2</b>
-              </Label>
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListItemAvatar>
-                <Avatar src="/static/images/avatars/2.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                sx={{
-                  mr: 1
-                }}
-                primaryTypographyProps={{
-                  color: 'textPrimary',
-                  variant: 'h5',
-                  noWrap: true
-                }}
-                secondaryTypographyProps={{
-                  color: 'textSecondary',
-                  noWrap: true
-                }}
-                primary="Kierra Herwitz"
-                secondary="Hi! Did you manage to send me those documents"
-              />
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListItemAvatar>
-                <Avatar src="/static/images/avatars/3.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                sx={{
-                  mr: 1
-                }}
-                primaryTypographyProps={{
-                  color: 'textPrimary',
-                  variant: 'h5',
-                  noWrap: true
-                }}
-                secondaryTypographyProps={{
-                  color: 'textSecondary',
-                  noWrap: true
-                }}
-                primary="Craig Vaccaro"
-                secondary="Ola, I still haven't received the program schedule"
-              />
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListItemAvatar>
-                <Avatar src="/static/images/avatars/4.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                sx={{
-                  mr: 1
-                }}
-                primaryTypographyProps={{
-                  color: 'textPrimary',
-                  variant: 'h5',
-                  noWrap: true
-                }}
-                secondaryTypographyProps={{
-                  color: 'textSecondary',
-                  noWrap: true
-                }}
-                primary="Adison Press"
-                secondary="I recently did some buying on Amazon and now I'm stuck"
-              />
-              <Label color="primary">
-                <b>8</b>
-              </Label>
+              </Label> */}
             </ListItemWrapper>
           </List>
         )}

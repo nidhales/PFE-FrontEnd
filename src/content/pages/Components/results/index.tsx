@@ -9,29 +9,28 @@ import {
   CardActions,
   Typography,
   IconButton,
-  Tooltip,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@mui/material';
 import Footer from 'src/components/Footer';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import {
-  useAddSolutionMutation,
-  useDeleteSolutionMutation,
-  useGetAllSolutionsQuery,
-  useUpdateSolutionMutation
-} from 'src/redux/api/solutions/solutionApi';
-import { theme } from 'src/shared/utils/theme';
+  useAddErrorMutation,
+  useDeleteErrorMutation,
+  useGetAllErrorsQuery,
+  useUpdateErrorMutation
+} from 'src/redux/api/Errors/errorApi';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { theme } from 'src/shared/utils/theme';
 import CustomModal from 'src/components/CustomModal/CustomModal';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import Chat from '../chat';
 
-function Solution() {
+function Result() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [solutionId, setsolutionId] = useState<string>('');
+  const [errorId, setErrorId] = useState<string>('');
   const open: boolean = openAdd || openUpdate;
 
   const handleOpenAdd = () => {
@@ -43,37 +42,34 @@ function Solution() {
 
   const handleOpenUpdate = (id: string) => {
     setOpenUpdate(true);
-    setsolutionId(id);
+    setErrorId(id);
   };
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
   };
   // API Calls
-  const { data: solutions, isLoading, error } = useGetAllSolutionsQuery();
-  const [deleteSolution] = useDeleteSolutionMutation();
-  const [updateSolution, { isSuccess: updateSolutionSuccess }] =
-    useUpdateSolutionMutation();
-  const [addSolution, { isSuccess: addSolutionSuccess }] =
-    useAddSolutionMutation();
+  const { data: errors, isLoading, error } = useGetAllErrorsQuery();
+  const [deleteError] = useDeleteErrorMutation();
+  const [updateError, { isSuccess: updateErrorSuccess }] =
+    useUpdateErrorMutation();
+  const [addError, { isSuccess: addErrorSuccess }] = useAddErrorMutation();
 
   // delete handler
-  const handleDeleteSolution = async (solutionId: string) => {
-    await deleteSolution({ id: solutionId });
+  const handleDeleteError = async (errorId: string) => {
+    await deleteError({ id: errorId });
   };
 
-  const handleSubmitModal = async (formFields, solutionId: string) => {
+  const handleSubmitModal = async (formFields, errorId: string) => {
     if (openAdd) {
-      await addSolution({
-        score: formFields.score,
-        code: formFields.code,
-        guide: formFields.guide
+      await addError({
+        ErrorName: formFields.ErrorName,
+        ErrorDescription: formFields.ErrorDescription
       });
     } else {
-      await updateSolution({
-        id: solutionId,
-        score: formFields.score,
-        code: formFields.code,
-        guide: formFields.guide
+      await updateError({
+        id: errorId,
+        ErrorName: formFields.ErrorName,
+        ErrorDescription: formFields.ErrorDescription
       });
     }
   };
@@ -82,9 +78,13 @@ function Solution() {
   return (
     <>
       <Helmet>
-        <title>ShareNet - Solution</title>
+        <title>ShareNet - Error</title>
       </Helmet>
-      <PageTitleWrapper></PageTitleWrapper>
+      <PageTitleWrapper>
+        <Button variant="contained" onClick={handleOpenAdd} color="success">
+          Add Error
+        </Button>
+      </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
           container
@@ -93,29 +93,23 @@ function Solution() {
           alignItems="stretch"
           spacing={3}
         >
-          {solutions?.map((solution) => (
+          {errors?.map((error) => (
             <>
-              <Grid item xs={12} key={solution.id}>
+              <Grid item xs={12} key={error.id}>
                 <Card>
                   <Divider />
                   <CardContent>
                     <Card sx={{ minWidth: 275 }}>
                       <CardContent>
-                        <Typography sx={{ fontSize: 20 }}>
-                          {solution.guide}
-                        </Typography>
-                        <Divider />
                         <Typography
-                          sx={{ fontSize: 14 }}
+                          sx={{ fontSize: 25 }}
                           color="text.secondary"
                           gutterBottom
                         >
-                          <SyntaxHighlighter language="stylus" style={dracula}>
-                            {solution.code}
-                          </SyntaxHighlighter>
+                          {error.ErrorName}{' '}
                         </Typography>
-                        <Typography variant="h5" component="div">
-                          {solution.score}
+                        <Typography variant="body2">
+                          {error.ErrorDescription}
                         </Typography>
                       </CardContent>
                     </Card>
@@ -130,12 +124,12 @@ function Solution() {
                           }}
                           color="inherit"
                           size="small"
-                          onClick={() => handleOpenUpdate(solution.id)}
+                          onClick={() => handleOpenUpdate(error.id)}
                         >
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete Solution" arrow>
+                      <Tooltip title="Delete Error" arrow>
                         <IconButton
                           sx={{
                             '&:hover': {
@@ -145,7 +139,7 @@ function Solution() {
                           }}
                           color="inherit"
                           size="small"
-                          onClick={() => handleDeleteSolution(solution.id)}
+                          onClick={() => handleDeleteError(error.id)}
                         >
                           <DeleteTwoToneIcon fontSize="small" />
                         </IconButton>
@@ -156,39 +150,37 @@ function Solution() {
               </Grid>
               <CustomModal
                 open={open}
-                isSuccess={addSolutionSuccess || updateSolutionSuccess}
+                isSuccess={addErrorSuccess || updateErrorSuccess}
                 onSubmit={handleSubmitModal}
                 handleClose={openAdd ? handleCloseAdd : handleCloseUpdate}
                 fields={[
-                  // {
-                  //   label: 'Score',
-                  //   name: 'score',
-                  //   type: 'number',
-                  //   required: false
-                  // },
                   {
-                    label: 'Solution Code',
-                    name: 'code',
+                    label: 'Error Name',
+                    name: 'ErrorName',
                     type: 'text',
                     required: true
                   },
                   {
-                    label: 'Solution Guide',
-                    name: 'guide',
+                    label: 'Error Description',
+                    name: 'ErrorDescription',
                     type: 'text',
                     required: true
                   }
                 ]}
                 action={openAdd ? 'Add' : 'Update'}
-                title={openAdd ? 'Add Solution' : 'Update Solution'}
-                id={solutionId}
+                title={openAdd ? 'Add Error' : 'Update Error'}
+                id={errorId}
               />
             </>
           ))}
         </Grid>
+        <Chat
+          senderId={'6489b414b4cfa14b403df4cf'}
+          receiverId={'648a58d1f7a89cb075c8dcc6'}
+        />
       </Container>
       <Footer />
     </>
   );
 }
-export default Solution;
+export default Result;

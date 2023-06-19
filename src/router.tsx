@@ -4,6 +4,9 @@ import { RouteObject } from 'react-router';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import Result from './content/pages/Components/results';
+import Chat from './content/pages/Components/chat';
+
 const Loader = (Component) => (props) =>
   (
     <Suspense fallback={<SuspenseLoader />}>
@@ -57,7 +60,7 @@ const Categories = Loader(
   lazy(() => import('src/content/pages/Components/Categories'))
 );
 
-const routes: RouteObject[] = [
+const routes = [
   {
     path: '',
     element: <BaseLayout />,
@@ -225,6 +228,20 @@ const routes: RouteObject[] = [
       {
         path: 'article',
         element: <Article />
+      }
+    ]
+  },
+  {
+    path: '',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="buttons" replace />
+      },
+      {
+        path: 'result',
+        element: <Result />
       }
     ]
   }

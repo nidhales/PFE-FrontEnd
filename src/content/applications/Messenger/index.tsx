@@ -18,6 +18,7 @@ import {
   IconButton,
   useTheme
 } from '@mui/material';
+import { ParsedUser } from '../Users/settings/Edit.interfaces';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -80,6 +81,7 @@ function ApplicationsMessenger() {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  const parsedUser: ParsedUser = JSON.parse(localStorage.getItem('user'));
 
   return (
     <>
@@ -97,7 +99,7 @@ function ApplicationsMessenger() {
           onClose={handleDrawerToggle}
         >
           <Scrollbar>
-            <SidebarContent />
+            <SidebarContent parsedUser={parsedUser} />
           </Scrollbar>
         </DrawerWrapperMobile>
         <Sidebar
@@ -106,7 +108,7 @@ function ApplicationsMessenger() {
           }}
         >
           <Scrollbar>
-            <SidebarContent />
+            <SidebarContent parsedUser={parsedUser} />
           </Scrollbar>
         </Sidebar>
         <ChatWindow>
@@ -134,7 +136,6 @@ function ApplicationsMessenger() {
             </Scrollbar>
           </Box>
           <Divider />
-          
         </ChatWindow>
       </RootWrapper>
     </>

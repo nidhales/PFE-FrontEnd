@@ -9,15 +9,14 @@ import {
 } from '@mui/material';
 
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   useUpdateUserMutation,
   useUserBadgeQuery
 } from 'src/redux/api/Users/userApi';
-import { EditTabProps, ParsedUser } from './Edit.interfaces';
+import { EditTabProps } from './Edit.interfaces';
 import CustomModal from 'src/components/CustomModal/CustomModal';
 
 function EditProfileTab({ parsedUser }: EditTabProps) {
@@ -45,7 +44,8 @@ function EditProfileTab({ parsedUser }: EditTabProps) {
       LastName: formFields.LastName,
       PhoneNumber: formFields.PhoneNumber,
       email: formFields.email,
-      password: formFields.password
+      password: formFields.password,
+      image: formFields.image
     });
   };
   return (
@@ -95,7 +95,7 @@ function EditProfileTab({ parsedUser }: EditTabProps) {
                   <Grid item xs={12} sm={8} md={9}>
                     <Text color="black">
                       <img
-                        src="/static/images/avatars/avatarNidhalProfil.jpg"
+                        src={parsedUser.image}
                         style={{
                           borderRadius: '50%',
                           width: '200px',
@@ -274,9 +274,15 @@ function EditProfileTab({ parsedUser }: EditTabProps) {
                 required: true
               },
               {
-                label: 'picture',
+                label: 'password',
                 name: 'password',
-                type: 'file',
+                type: 'text',
+                required: true
+              },
+              {
+                label: 'picture',
+                name: 'image',
+                type: 'text',
                 required: true
               }
             ]}

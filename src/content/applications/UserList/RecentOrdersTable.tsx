@@ -5,8 +5,6 @@ import {
   Tooltip,
   Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
   Checkbox,
   IconButton,
@@ -184,13 +182,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const handleOpen = (id) => {
     setOpen(true);
     setUserId(id);
-    console.log(id);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleSubmitModal = async (formFields, userId: string) => {
     await updateUser({
       id: userId,
@@ -198,7 +194,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       LastName: formFields.LastName,
       PhoneNumber: formFields.PhoneNumber,
       email: formFields.email,
-      password: formFields.password
+      password: formFields.password,
+      image: formFields.image
     });
   };
   if (isLoading) return <CircularProgress color="primary" />;
@@ -254,7 +251,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         noWrap
                       ></Typography>
                     </TableCell>
-
                     <TableCell>
                       <Typography
                         variant="body1"
@@ -288,8 +284,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         noWrap
                       ></Typography>
                     </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {user.badges.name}
+                      </Typography>
 
-                    <TableCell align="right"></TableCell>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        noWrap
+                      ></Typography>
+                    </TableCell>{' '}
                     <TableCell align="right">
                       <Tooltip title="Edit Order" arrow>
                         <IconButton
@@ -331,38 +342,38 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   handleClose={handleClose}
                   fields={[
                     {
-                      label: 'User First Name',
+                      label: 'First Name',
                       name: 'FirstName',
                       type: 'text',
                       required: true
                     },
                     {
-                      label: 'User Last Name',
+                      label: 'Last Name',
                       name: 'LastName',
                       type: 'text',
                       required: true
                     },
                     {
-                      label: 'User Phone Number',
+                      label: 'Phone Number',
                       name: 'PhoneNumber',
                       type: 'text',
                       required: true
                     },
                     {
-                      label: 'User Email',
+                      label: 'Email',
                       name: 'email',
                       type: 'text',
                       required: true
                     },
                     {
-                      label: 'User Password',
+                      label: 'Password',
                       name: 'password',
                       type: 'password',
                       required: true
                     },
                     ,
                     {
-                      label: 'User Badge',
+                      label: 'Badge',
                       name: 'password',
                       type: 'password',
                       required: true
