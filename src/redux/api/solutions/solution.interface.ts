@@ -1,10 +1,13 @@
 import { ISolution } from 'src/models/SolutionsModel';
+import { User } from 'src/models/User';
+import { UserData } from '../Users/user.interface';
 
 export interface SolutionData {
   _id: string;
   score: number;
   code: string;
   guide: string;
+  user: UserData;
 }
 
 export interface GetAllSolutionsResponse<T> {
@@ -40,6 +43,7 @@ export interface DeleteSolutionResponse<T> {
 }
 
 export interface AddSolutionToErrorRequest {
+  userId: string;
   id: string;
   code: string;
   guide: string;
@@ -54,7 +58,8 @@ export const decodeSolutionsResponse = (
     id: solution._id,
     score: solution.score,
     code: solution.code,
-    guide: solution.guide
+    guide: solution.guide,
+    user: solution.user
   }));
 
   return solutions;

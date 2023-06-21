@@ -5,7 +5,8 @@ import {
   InputLabel,
   Typography,
   Button,
-  Divider
+  Divider,
+  Alert
 } from '@mui/material';
 import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -51,7 +52,7 @@ const RegistrationForumComponent: FC = () => {
 
   const navigate = useNavigate();
 
-  const [register, { isSuccess }] = useRegisterMutation();
+  const [register, { isSuccess, isError }] = useRegisterMutation();
 
   const onSubmitHandler = async (values: FormikValues) => {
     await register({
@@ -282,6 +283,11 @@ const RegistrationForumComponent: FC = () => {
                 variant="outlined"
                 size="small"
               />
+              {isError && (
+                <Alert severity="error" sx={{ margin: '5px 0' }}>
+                  Email Taken
+                </Alert>
+              )}
               <Button
                 variant="contained"
                 style={{

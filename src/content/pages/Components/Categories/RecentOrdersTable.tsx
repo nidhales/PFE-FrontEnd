@@ -76,33 +76,31 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
   const theme = useTheme();
 
-  // API Calls
+  // Get Categories
   const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
+  // Delete Category
   const [deleteCategory] = useDeleteCategoryMutation();
+  // Update Category
   const [updateCategory, { isSuccess }] = useUpdateCategoryMutation();
-
-  // delete handler
+  // Delete Category handler
   const handleDeleteCategory = async (categoryId: string) => {
     await deleteCategory({ id: categoryId });
   };
-
   const [open, setOpen] = useState(false);
   const handleOpen = (id: string) => {
     setOpen(true);
     setCatId(id);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
+  // Submit handler
   const handleSubmitModal = async (formFields, catId: string) => {
     await updateCategory({
       id: catId,
       name: formFields.name
     });
   };
-
   if (isLoading) return <CircularProgress color="primary" />;
 
   return (
@@ -152,9 +150,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           }}
                           color="inherit"
                           size="small"
-                          onClick={() =>
-                            handleOpen(category.id)
-                          }
+                          onClick={() => handleOpen(category.id)}
                         >
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>

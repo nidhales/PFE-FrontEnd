@@ -101,7 +101,8 @@ const CustomModal = ({
                                     [field.name]: e.target.value
                                   })
                                 }
-                              />
+                              >
+                              </TextField>
                             </Box>
                           )
                         )}

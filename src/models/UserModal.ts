@@ -1,3 +1,4 @@
+import { ErrorData } from 'src/redux/api/Errors/error.interface';
 import { Badge } from 'src/redux/api/Users/user.interface';
 
 export interface IUser {
@@ -7,4 +8,5 @@ export interface IUser {
   PhoneNumber: string;
   email: string;
   badges: Badge;
+  errors: ErrorData[];
 }

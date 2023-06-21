@@ -13,5 +13,5 @@ export interface ModalProps {
   open: boolean;
   isSuccess: boolean;
   action: string;
-  id?: string
+  id?: string;
 }

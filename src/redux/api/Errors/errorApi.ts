@@ -11,13 +11,14 @@ import {
   UpdateErrorRequest,
   decodeErrorsResponse
 } from './error.interface';
+import { getCurrentUser } from 'src/shared/helpers/getUser';
 
 export const errorApi = createApi({
   reducerPath: 'errorApi',
   baseQuery: fetchBaseQuery({
     baseUrl: ENDPOINTS.BASE_URL
   }),
-  tagTypes: ['Errors'],
+  tagTypes: ['Errors', 'UserErrors'],
   keepUnusedDataFor: 0.1,
   endpoints: (builder) => ({
     // Get All Errors
@@ -39,7 +40,7 @@ export const errorApi = createApi({
         url: `/error/${params.id}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['Errors']
+      invalidatesTags: ['UserErrors']
     }),
     // Add error
     addError: builder.mutation<AddErrorResponse<IError>, AddErrorRequest>({
@@ -50,7 +51,21 @@ export const errorApi = createApi({
       }),
       invalidatesTags: ['Errors']
     }),
-
+    // Get All User Errors
+    getUserErrors: builder.query({
+      query: (params) => {
+        return {
+          url: `/user/${params.id}`
+        };
+      },
+      providesTags: ['Errors']
+    }),
+    // get Error By Id
+    GetErrorById: builder.query<IError, ErrorIdInterface>({
+      query: (params) => ({
+        url: `/error/${params.id}`
+      })
+    }),
     // update Error
     updateError: builder.mutation<
       AddErrorResponse<ErrorData>,
@@ -64,7 +79,7 @@ export const errorApi = createApi({
           ErrorDescription: body.ErrorDescription
         }
       }),
-      invalidatesTags: ['Errors']
+      invalidatesTags: ['UserErrors']
     })
   })
 });
@@ -73,5 +88,7 @@ export const {
   useGetAllErrorsQuery,
   useDeleteErrorMutation,
   useAddErrorMutation,
-  useUpdateErrorMutation
+  useUpdateErrorMutation,
+  useGetUserErrorsQuery,
+  useGetErrorByIdQuery
 } = errorApi;

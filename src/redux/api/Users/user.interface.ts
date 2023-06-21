@@ -1,4 +1,5 @@
 import { IUser } from 'src/models/UserModal';
+import { ErrorData } from '../Errors/error.interface';
 
 export interface UserData {
   _id: string;
@@ -8,6 +9,7 @@ export interface UserData {
   email: string;
   badges: Badge;
   image: string;
+  errors: ErrorData[];
 }
 
 export interface UserBadgeRequest {
@@ -64,6 +66,11 @@ export interface AddUserResponse<T> {
   newUser: T;
 }
 
+export interface AddErrorToUserRequest {
+  id: string;
+  ErrorName: string;
+  ErrorDescription: string;
+}
 export const decodeUsersResponse = (
   response: GetAllUsersResponse<UserData>
 ): IUser[] => {
@@ -76,6 +83,7 @@ export const decodeUsersResponse = (
     PhoneNumber: user.PhoneNumber,
     email: user.email,
     badges: user.badges,
+    errors: user.errors,
     image: user.image
   }));
 

@@ -27,9 +27,6 @@ const Feeds = Loader(lazy(() => import('src/content/dashboards/Feeds')));
 const Messenger = Loader(
   lazy(() => import('src/content/applications/Messenger'))
 );
-const UserProfile = Loader(
-  lazy(() => import('src/content/applications/Users/profile'))
-);
 const UserSettings = Loader(
   lazy(() => import('src/content/applications/Users/settings'))
 );
@@ -49,7 +46,9 @@ const Solutions = Loader(
 const Subjects = Loader(
   lazy(() => import('src/content/pages/Components/Subjects'))
 );
-
+const ChatComponent = Loader(
+  lazy(() => import('src/content/pages/Components/Accordions'))
+);
 const Code = Loader(lazy(() => import('src/content/pages/Components/Code')));
 
 const Article = Loader(
@@ -136,10 +135,6 @@ const routes = [
             element: <Navigate to="details" replace />
           },
           {
-            path: 'details',
-            element: <UserProfile />
-          },
-          {
             path: 'settings',
             element: <UserSettings />
           }
@@ -217,6 +212,21 @@ const routes = [
       }
     ]
   },
+
+  {
+    path: '/components',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="buttons" replace />
+      },
+      {
+        path: 'accrodiont',
+        element: <ChatComponent />
+      }
+    ]
+  },
   {
     path: '/components',
     element: <SidebarLayout />,
@@ -240,7 +250,7 @@ const routes = [
         element: <Navigate to="buttons" replace />
       },
       {
-        path: 'result',
+        path: 'result/:id',
         element: <Result />
       }
     ]

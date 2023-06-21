@@ -18,26 +18,29 @@ import {
 } from 'src/redux/api/Users/userApi';
 import { EditTabProps } from './Edit.interfaces';
 import CustomModal from 'src/components/CustomModal/CustomModal';
+import { getCurrentUser } from 'src/shared/helpers/getUser';
 
 function EditProfileTab({ parsedUser }: EditTabProps) {
-  console.log({ parsedUser });
   const { data } = useUserBadgeQuery({ id: parsedUser?.badges[0] });
-
+  // Open Update Modal State
   const [openUpdate, setOpenUpdate] = useState(false);
   const open: boolean = openUpdate;
 
   const [userId, setUserId] = useState<string>('');
-
+  // Open Update 
   const handleOpenUpdate = (id: string) => {
     setOpenUpdate(true);
     setUserId(id);
   };
+  // Close update
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
   };
+  // Update User
   const [updateUser, { isSuccess: updateUserSuccess }] =
     useUpdateUserMutation();
-  const handleSubmitModal = async (formFields, userId: string) => {
+  // Submit handler
+  const handleSubmitModal = async (formFields) => {
     await updateUser({
       id: userId,
       FirstName: formFields.FirstName,
@@ -170,19 +173,9 @@ function EditProfileTab({ parsedUser }: EditTabProps) {
                   </Grid>
                   <Grid item xs={12} sm={8} md={9}>
                     <Text color="black">
-                      <b>Developper</b>
+                      <b>{parsedUser?.role}</b>
                     </Text>
                   </Grid>
-                  {/* <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-                      <Box pr={3} pb={2}>
-                        Timezone:
-                      </Box>
-                    </Grid>
-                  <Grid item xs={12} sm={8} md={9}>
-                    <Text color="black">
-                      <b>GMT +2</b>
-                    </Text>
-                  </Grid> */}
                   <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                     <Box pr={3} pb={2}>
                       Badge:

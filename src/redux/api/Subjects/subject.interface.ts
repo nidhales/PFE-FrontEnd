@@ -25,7 +25,7 @@ export interface SubjectIdInterface {
 
 export interface UpdateSubjectRequest {
   id: string;
-  name: string;
+  subjectName: string;
 }
 
 export interface DeleteSubjectResponse<T> {

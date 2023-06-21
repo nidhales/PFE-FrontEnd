@@ -40,142 +40,63 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import CustomModal from 'src/components/CustomModal/CustomModal';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
-// function SimpleDialog(props) {
-//   const { onClose, selectedValue, open } = props;
-
-//   const handleClose = () => {
-//     onClose(selectedValue);
-//   };
-//   const navigate = useNavigate();
-//   const [addSubject] = useAddSubjectMutation();
-
-//   const [SubjectName, setSubjectName] = useState('');
-//   const handleAddSubject = async (e) => {
-//     e.preventDefault();
-//     await addSubject({
-//       subjectName: SubjectName
-//     })
-//       .unwrap()
-//       .then(() => handleClose());
-//   };
-
-//   return (
-//     <Dialog onClose={handleClose} open={open} fullScreen>
-//       <List sx={{ pt: 1 }}>
-//         <SidebarLayout />
-//         <Container maxWidth="lg">
-//           <Grid
-//             marginTop="-300px"
-//             container
-//             direction="row"
-//             justifyContent="center"
-//             alignItems="stretch"
-//             spacing={3}
-//           >
-//             <Grid item xs={12}>
-//               <DialogActions>
-//                 <Button onClick={handleClose} color="success">
-//                   <CloseIcon />
-//                 </Button>
-//               </DialogActions>
-//               <Card>
-//                 <CardHeader title="Add Subject" />
-//                 <Divider />
-//                 <form onSubmit={handleAddSubject}>
-//                   <CardContent>
-//                     <Card sx={{ minWidth: 275 }}>
-//                       <CardContent>
-//                         <InputLabel
-//                           sx={{
-//                             fontWeight: 'bold',
-//                             fontStyle: 'italic',
-//                             marginTop: 1,
-//                             color: '#000000'
-//                           }}
-//                           htmlFor="name"
-//                         >
-//                           Subject Title
-//                         </InputLabel>
-
-//                         <TextField
-//                           color="success"
-//                           fullWidth
-//                           type="text"
-//                           name="name"
-//                           id="name"
-//                           variant="outlined"
-//                           size="small"
-//                           value={SubjectName}
-//                           onChange={(e) => {
-//                             setSubjectName(e.target.value);
-//                           }}
-//                         />
-//                       </CardContent>
-//                     </Card>
-//                   </CardContent>
-//                   <Button
-//                     variant="contained"
-//                     color="success"
-//                     sx={{
-//                       margin: 2
-//                     }}
-//                     type="submit"
-//                   >
-//                     Add Subject
-//                   </Button>
-//                 </form>
-//               </Card>
-//             </Grid>
-//           </Grid>
-//         </Container>
-//         <Footer />
-//       </List>
-//     </Dialog>
-//   );
-// }
-
-// SimpleDialog.propTypes = {
-//   onClose: PropTypes.func.isRequired,
-//   open: PropTypes.bool.isRequired,
-//   selectedValue: PropTypes.string.isRequired
-// };
 function Subject() {
-  const [selectedValue, setSelectedValue] = useState();
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [subjectId, setSubjectId] = useState<string>('');
+  const open: boolean = openAdd || openUpdate;
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseAdd = () => {
+    setOpenAdd(false);
   };
 
-  // API Calls
+  const handleOpenUpdate = (id: string) => {
+    setOpenUpdate(true);
+    setSubjectId(id);
+  };
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+  };
+  // Get Subject
   const { data: subjects, isLoading, error } = useGetAllSubjectsQuery();
+  // Delete Subject
   const [deleteSubject] = useDeleteSubjectMutation();
-  const [updateSubject, { isSuccess }] = useUpdateSubjectMutation();
-
+  // Update Subject
+  const [updateSubject, { isSuccess: updateArticleSuccess }] =
+    useUpdateSubjectMutation();
+  // Add Subject
+  const [addSubject, { isSuccess: addArticleSuccess }] =
+    useAddSubjectMutation();
   // delete handler
   const handleDeleteSubject = async (subjectId: string) => {
     await deleteSubject({ id: subjectId });
   };
-
-  const handleSubmitModal = async (formFields, id: string) => {
-    await updateSubject({
-      id: id,
-      name: formFields.name
-    });
+  // Submit handler
+  const handleSubmitModal = async (formFields, subjectId: string) => {
+    if (openAdd) {
+      await addSubject({
+        subjectName: formFields.subjectName
+      });
+    } else {
+      await updateSubject({
+        id: subjectId,
+        subjectName: formFields.subjectName
+      });
+    }
   };
   if (isLoading) return <CircularProgress color="success" />;
-  console.log(error);
   return (
     <>
       <Helmet>
         <title>ShareNet - Subjects</title>
       </Helmet>
       <PageTitleWrapper>
-        <Button variant="contained" onClick={handleOpen} color="success">
+        <Button variant="contained" onClick={handleOpenAdd} color="success">
           Add Subject
         </Button>
       </PageTitleWrapper>
@@ -218,7 +139,7 @@ function Subject() {
                           }}
                           color="inherit"
                           size="small"
-                          onClick={handleOpen}
+                          onClick={() => handleOpenUpdate(subject.id)}
                         >
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>
@@ -244,19 +165,20 @@ function Subject() {
               </Grid>
               <CustomModal
                 open={open}
-                isSuccess={isSuccess}
+                isSuccess={addArticleSuccess || updateArticleSuccess}
                 onSubmit={handleSubmitModal}
-                handleClose={handleClose}
+                handleClose={openAdd ? handleCloseAdd : handleCloseUpdate}
                 fields={[
                   {
                     label: 'Subject Name',
-                    name: 'name',
+                    name: 'subjectName',
                     type: 'text',
                     required: true
                   }
                 ]}
-                action="Update"
-                title="Update Subject"
+                action={openAdd ? 'add' : 'update'}
+                title={openAdd ? 'Add Subject' : 'Update Subject'}
+                id={subjectId}
               />
             </>
           ))}

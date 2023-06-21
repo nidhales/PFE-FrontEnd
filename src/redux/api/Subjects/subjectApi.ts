@@ -60,7 +60,7 @@ export const subjectApi = createApi({
       query: (body) => ({
         url: `/subject/${body.id}`,
         method: 'PUT',
-        body: { name: body.name }
+        body: { subjectName: body.subjectName }
       }),
       invalidatesTags: ['Subjects']
     })

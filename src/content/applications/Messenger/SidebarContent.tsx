@@ -224,7 +224,7 @@ function SidebarContent({ parsedUser }: EditTabProps) {
           <List disablePadding component="div">
             <ListItemWrapper selected>
               <ListItemAvatar>
-                <Avatar src="/static/images/avatars/1.jpg" />
+                <Avatar />
               </ListItemAvatar>
               <ListItemText
                 sx={{
@@ -239,8 +239,8 @@ function SidebarContent({ parsedUser }: EditTabProps) {
                   color: 'textSecondary',
                   noWrap: true
                 }}
-                primary="Zain Baptista"
-                secondary="Hey there, how are you today? Is it ok if I call you?"
+                primary="Ahmed Labidi"
+                secondary="Last message"
               />
               {/* <Label color="primary">
                 <b>2</b>
@@ -252,7 +252,7 @@ function SidebarContent({ parsedUser }: EditTabProps) {
           <List disablePadding component="div">
             <ListItemWrapper>
               <ListItemAvatar>
-                <Avatar src="/static/images/avatars/1.jpg" />
+                <Avatar />
               </ListItemAvatar>
               <ListItemText
                 sx={{
@@ -267,35 +267,11 @@ function SidebarContent({ parsedUser }: EditTabProps) {
                   color: 'textSecondary',
                   noWrap: true
                 }}
-                primary="Zain Baptista"
-                secondary="Hey there, how are you today? Is it ok if I call you?"
+                primary="Ahmed Labidi"
+                secondary="Last message"
               />
               <Label color="primary">
                 <b>2</b>
-              </Label>
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListItemAvatar>
-                <Avatar src="/static/images/avatars/4.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                sx={{
-                  mr: 1
-                }}
-                primaryTypographyProps={{
-                  color: 'textPrimary',
-                  variant: 'h5',
-                  noWrap: true
-                }}
-                secondaryTypographyProps={{
-                  color: 'textSecondary',
-                  noWrap: true
-                }}
-                primary="Adison Press"
-                secondary="I recently did some buying on Amazon and now I'm stuck"
-              />
-              <Label color="primary">
-                <b>8</b>
               </Label>
             </ListItemWrapper>
           </List>

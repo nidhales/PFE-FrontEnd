@@ -26,16 +26,7 @@ const CardActionsWrapper = styled(CardActions)(
 `
 );
 
-function ActivityTab({ parsedUser }: EditTabProps) {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-    }
-  }, []);
+function ActivityTab() {
   const { data: errors, isLoading, error } = useGetAllErrorsQuery();
   useUpdateErrorMutation();
   return (
@@ -66,7 +57,7 @@ function ActivityTab({ parsedUser }: EditTabProps) {
             <Box sx={{ mt: { xs: 2, md: 0 } }}>
               <Typography variant="subtitle2" component="span">
                 <Text color="black">
-                  <b>7</b>
+                  <b>{error.solutions.length}</b>
                 </Text>{' '}
                 reactions •{' '}
                 <Text color="black">

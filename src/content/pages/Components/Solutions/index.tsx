@@ -27,6 +27,7 @@ import CustomModal from 'src/components/CustomModal/CustomModal';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { userApi } from 'src/redux/api';
 
 function Solution() {
   const [openAdd, setOpenAdd] = useState(false);
@@ -48,26 +49,20 @@ function Solution() {
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
   };
-  // API Calls
+  // Get Code
   const { data: solutions, isLoading, error } = useGetAllSolutionsQuery();
+  // Delete Code
   const [deleteSolution] = useDeleteSolutionMutation();
+  // Update Code
   const [updateSolution, { isSuccess: updateSolutionSuccess }] =
     useUpdateSolutionMutation();
-  const [addSolution, { isSuccess: addSolutionSuccess }] =
-    useAddSolutionMutation();
-
   // delete handler
   const handleDeleteSolution = async (solutionId: string) => {
     await deleteSolution({ id: solutionId });
   };
-
+  // Sumbit handler
   const handleSubmitModal = async (formFields, solutionId: string) => {
     if (openAdd) {
-      await addSolution({
-        score: formFields.score,
-        code: formFields.code,
-        guide: formFields.guide
-      });
     } else {
       await updateSolution({
         id: solutionId,
@@ -156,16 +151,10 @@ function Solution() {
               </Grid>
               <CustomModal
                 open={open}
-                isSuccess={addSolutionSuccess || updateSolutionSuccess}
+                isSuccess={updateSolutionSuccess}
                 onSubmit={handleSubmitModal}
                 handleClose={openAdd ? handleCloseAdd : handleCloseUpdate}
                 fields={[
-                  // {
-                  //   label: 'Score',
-                  //   name: 'score',
-                  //   type: 'number',
-                  //   required: false
-                  // },
                   {
                     label: 'Solution Code',
                     name: 'code',

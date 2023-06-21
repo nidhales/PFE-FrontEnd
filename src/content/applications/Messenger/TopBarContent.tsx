@@ -116,11 +116,10 @@ function TopBarContent() {
               width: 48,
               height: 48
             }}
-            alt="Zain Baptista"
-            src="/static/images/avatars/1.jpg"
+            alt="Ahmed Labidi"
           />
           <Box ml={1}>
-            <Typography variant="h4">Zain Baptista</Typography>
+            <Typography variant="h4">Ahmed Labidi</Typography>
             <Typography variant="subtitle1">
               {formatDistance(subMinutes(new Date(), 8), new Date(), {
                 addSuffix: true
@@ -179,10 +178,10 @@ function TopBarContent() {
                 height: theme.spacing(12)
               }}
               variant="rounded"
-              alt="Zain Baptista"
-              src="/static/images/avatars/1.jpg"
+              alt="Ahmed Labidi"
+              src=""
             />
-            <Typography variant="h4">Zain Baptista</Typography>
+            <Typography variant="h4">Ahmed Labidi</Typography>
             <Typography variant="subtitle2">
               Active{' '}
               {formatDistance(subMinutes(new Date(), 7), new Date(), {
@@ -311,31 +310,9 @@ function TopBarContent() {
                     <DescriptionTwoToneIcon />
                   </ListItemIconWrapper>
                   <ListItemText
-                    primary="HolidayPictures.zip"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                    secondary="You opened in the past year"
-                    secondaryTypographyProps={{ variant: 'subtitle1' }}
-                  />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIconWrapper>
-                    <DescriptionTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <ListItemText
-                    primary="2021Screenshot.jpg"
+                    primary="image.jpg"
                     primaryTypographyProps={{ variant: 'h5' }}
                     secondary="You edited this file yesterday"
-                    secondaryTypographyProps={{ variant: 'subtitle1' }}
-                  />
-                </ListItem>
-                <ListItem button>
-                  <ListItemIconWrapper>
-                    <DescriptionTwoToneIcon />
-                  </ListItemIconWrapper>
-                  <ListItemText
-                    primary="PresentationDeck.pdf"
-                    primaryTypographyProps={{ variant: 'h5' }}
-                    secondary="Never opened"
                     secondaryTypographyProps={{ variant: 'subtitle1' }}
                   />
                 </ListItem>

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   ListSubheader,
   alpha,
@@ -164,8 +164,17 @@ const SubMenuWrapper = styled(Box)(
 );
 
 function SidebarMenu() {
-  const { closeSidebar } = useContext(SidebarContext);
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+    }
+  }, []);
+
+  const { closeSidebar } = useContext(SidebarContext);
   return (
     <>
       <MenuWrapper>
@@ -208,17 +217,6 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/profile/details"
-                  startIcon={<AccountCircleTwoToneIcon />}
-                >
-                  User Profile
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
                   to="/management/profile/settings"
                   startIcon={<DisplaySettingsTwoToneIcon />}
                 >
@@ -228,40 +226,44 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Admin
-            </ListSubheader>
-          }
-        ></List>
-        <SubMenuWrapper>
-          <List component="div">
-            <ListItem component="div">
-              <Button
-                disableRipple
-                component={RouterLink}
-                onClick={closeSidebar}
-                to="/management/UserList"
-                startIcon={<PeopleOutlineIcon />}
-              >
-                Users List
-              </Button>
-            </ListItem>
-            <ListItem component="div">
-              <Button
-                disableRipple
-                component={RouterLink}
-                onClick={closeSidebar}
-                to="/components/categories"
-                startIcon={<CategoryTwoToneIcon />}
-              >
-                Categories
-              </Button>
-            </ListItem>
-          </List>
-        </SubMenuWrapper>
+        {user?.role === 'Admin' && (
+          <>
+            <List
+              component="div"
+              subheader={
+                <ListSubheader component="div" disableSticky>
+                  Admin
+                </ListSubheader>
+              }
+            ></List>
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/management/UserList"
+                    startIcon={<PeopleOutlineIcon />}
+                  >
+                    Users List
+                  </Button>
+                </ListItem>
+                <ListItem component="div">
+                  <Button
+                    disableRipple
+                    component={RouterLink}
+                    onClick={closeSidebar}
+                    to="/components/categories"
+                    startIcon={<CategoryTwoToneIcon />}
+                  >
+                    Categories
+                  </Button>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </>
+        )}
         <List
           component="div"
           subheader={

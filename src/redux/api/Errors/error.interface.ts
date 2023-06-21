@@ -1,11 +1,17 @@
 import { IError } from 'src/models/ErrorModel';
 import { ISolution } from 'src/models/SolutionsModel';
+import { UserData } from '../Users/user.interface';
+import { ICategory } from 'src/models/CategoryModel';
+import { ITag } from 'src/models/TagModel';
 
 export interface ErrorData {
   _id: string;
   ErrorName: string;
   ErrorDescription: string;
   solutions: ISolution[];
+  categories: ICategory[];
+  tags: ITag[];
+  user: UserData;
 }
 
 export interface GetAllErrorsResponse<T> {
@@ -24,6 +30,10 @@ export interface AddErrorResponse<T> {
 }
 
 export interface ErrorIdInterface {
+  id: string;
+}
+
+export interface UserIdErrorInterface {
   id: string;
 }
 
@@ -47,7 +57,10 @@ export const decodeErrorsResponse = (
     id: error._id,
     ErrorName: error.ErrorName,
     ErrorDescription: error.ErrorDescription,
-    solutions: error.solutions
+    solutions: error.solutions,
+    tags: error.tags,
+    categories: error.categories,
+    user: error.user
   }));
 
   return errors;

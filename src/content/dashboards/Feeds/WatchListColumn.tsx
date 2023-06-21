@@ -20,7 +20,6 @@ import {
 import Label from 'src/components/Label';
 import Text from 'src/components/Text';
 import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
 import { useState } from 'react';
 import { useGetAllErrorsQuery } from 'src/redux/api/Errors/errorApi';
 import { SolutionBox } from './WatchList.style';
@@ -28,6 +27,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAddSolutionToErrorMutation } from 'src/redux/api/solutions/solutionApi';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { getCurrentUser } from 'src/shared/helpers/getUser';
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
@@ -87,21 +87,22 @@ function WatchListColumn() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [likes, setLikes] = useState(0);
   const [active, setActive] = useState(false);
-
+  const [userId, setUserId] = useState<string>('');
   const handleLike = () => {
     setLikes(likes + 1);
     setActive(!active);
   };
-
+  const user = getCurrentUser();
   const handleSubmitSoutionToError = async (id: string) => {
+    setUserId(userId);
     await addSoutionToError({
+      userId: user._id,
       id: id,
       code: solutionFields.code,
       guide: solutionFields.guide
     });
     await refetch();
   };
-
   if (isLoading) return <CircularProgress color="primary" />;
 
   return (
@@ -126,14 +127,11 @@ function WatchListColumn() {
             >
               <Box display="flex" alignItems="center">
                 <AvatarWrapper>
-                  <img
-                    alt="BTC"
-                    src="/static/images/placeholders/logo/avatarNidhal.png"
-                  />{' '}
+                  <img alt="BTC" src={error.user.image} />{' '}
                 </AvatarWrapper>
                 <Box>
                   <Typography variant="h4" noWrap>
-                    Nidhal Boussaa
+                    {error.user.FirstName} {error.user.LastName}
                   </Typography>
                 </Box>
               </Box>
@@ -157,8 +155,8 @@ function WatchListColumn() {
                 </Typography>
 
                 <Typography variant="h6" sx={{ mb: 2 }}>
-                  {!isMobile && '|'} Category
-                  <Label color="success">tags</Label>
+                  {!isMobile && '| '} {error?.categories[0]?.name}{' '}
+                  <Label color="success"> {error?.tags[0]?.TagName}</Label>
                 </Typography>
               </Box>
 
@@ -264,6 +262,14 @@ function WatchListColumn() {
               </Box>
               {error.solutions.map((solution) => (
                 <SolutionBox key={solution.id}>
+                  <Box display="flex">
+                    <AvatarWrapper>
+                      <img alt="BTC" src={solution?.user?.image} />{' '}
+                    </AvatarWrapper>
+                    <Typography variant="h4" alignSelf="center">
+                      {solution?.user?.FirstName} {solution?.user?.LastName}
+                    </Typography>
+                  </Box>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="h4">{solution.guide}</Typography>

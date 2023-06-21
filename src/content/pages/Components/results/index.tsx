@@ -19,6 +19,7 @@ import {
   useAddErrorMutation,
   useDeleteErrorMutation,
   useGetAllErrorsQuery,
+  useGetErrorByIdQuery,
   useUpdateErrorMutation
 } from 'src/redux/api/Errors/errorApi';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
@@ -26,6 +27,7 @@ import { theme } from 'src/shared/utils/theme';
 import CustomModal from 'src/components/CustomModal/CustomModal';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import Chat from '../chat';
+import { useParams } from 'react-router';
 
 function Result() {
   const [openAdd, setOpenAdd] = useState(false);
@@ -47,18 +49,14 @@ function Result() {
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
   };
+  const { id } = useParams();
+  console.log(id);
   // API Calls
-  const { data: errors, isLoading, error } = useGetAllErrorsQuery();
+  const { data: errors, isLoading, error } = useGetErrorByIdQuery({ id: id });
   const [deleteError] = useDeleteErrorMutation();
   const [updateError, { isSuccess: updateErrorSuccess }] =
     useUpdateErrorMutation();
   const [addError, { isSuccess: addErrorSuccess }] = useAddErrorMutation();
-
-  // delete handler
-  const handleDeleteError = async (errorId: string) => {
-    await deleteError({ id: errorId });
-  };
-
   const handleSubmitModal = async (formFields, errorId: string) => {
     if (openAdd) {
       await addError({
@@ -81,9 +79,8 @@ function Result() {
         <title>ShareNet - Error</title>
       </Helmet>
       <PageTitleWrapper>
-        <Button variant="contained" onClick={handleOpenAdd} color="success">
-          Add Error
-        </Button>
+        {' '}
+        <Typography variant="h3">Results</Typography>
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -93,91 +90,53 @@ function Result() {
           alignItems="stretch"
           spacing={3}
         >
-          {errors?.map((error) => (
-            <>
-              <Grid item xs={12} key={error.id}>
-                <Card>
-                  <Divider />
-                  <CardContent>
-                    <Card sx={{ minWidth: 275 }}>
-                      <CardContent>
-                        <Typography
-                          sx={{ fontSize: 25 }}
-                          color="text.secondary"
-                          gutterBottom
-                        >
-                          {error.ErrorName}{' '}
-                        </Typography>
-                        <Typography variant="body2">
-                          {error.ErrorDescription}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                    <CardActions disableSpacing>
-                      <Tooltip title="Edit Order" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.primary.lighter
-                            },
-                            color: theme.palette.primary.main
-                          }}
-                          color="inherit"
-                          size="small"
-                          onClick={() => handleOpenUpdate(error.id)}
-                        >
-                          <EditTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete Error" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.error.lighter
-                            },
-                            color: theme.palette.error.main
-                          }}
-                          color="inherit"
-                          size="small"
-                          onClick={() => handleDeleteError(error.id)}
-                        >
-                          <DeleteTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </CardActions>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <CustomModal
-                open={open}
-                isSuccess={addErrorSuccess || updateErrorSuccess}
-                onSubmit={handleSubmitModal}
-                handleClose={openAdd ? handleCloseAdd : handleCloseUpdate}
-                fields={[
-                  {
-                    label: 'Error Name',
-                    name: 'ErrorName',
-                    type: 'text',
-                    required: true
-                  },
-                  {
-                    label: 'Error Description',
-                    name: 'ErrorDescription',
-                    type: 'text',
-                    required: true
-                  }
-                ]}
-                action={openAdd ? 'Add' : 'Update'}
-                title={openAdd ? 'Add Error' : 'Update Error'}
-                id={errorId}
-              />
-            </>
-          ))}
+          <>
+            <Grid item xs={12} key={errors?.id}>
+              <Card>
+                <Divider />
+                <CardContent>
+                  <Card sx={{ minWidth: 275 }}>
+                    <CardContent>
+                      <Typography
+                        sx={{ fontSize: 25 }}
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        {errors?.ErrorName}{' '}
+                      </Typography>
+                      <Typography variant="body2">
+                        {errors?.ErrorDescription}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+            </Grid>
+            <CustomModal
+              open={open}
+              isSuccess={addErrorSuccess || updateErrorSuccess}
+              onSubmit={handleSubmitModal}
+              handleClose={openAdd ? handleCloseAdd : handleCloseUpdate}
+              fields={[
+                {
+                  label: 'Error Name',
+                  name: 'ErrorName',
+                  type: 'text',
+                  required: true
+                },
+                {
+                  label: 'Error Description',
+                  name: 'ErrorDescription',
+                  type: 'text',
+                  required: true
+                }
+              ]}
+              action={openAdd ? 'Add' : 'Update'}
+              title={openAdd ? 'Add Error' : 'Update Error'}
+              id={errorId}
+            />
+          </>
         </Grid>
-        <Chat
-          senderId={'6489b414b4cfa14b403df4cf'}
-          receiverId={'648a58d1f7a89cb075c8dcc6'}
-        />
       </Container>
       <Footer />
     </>

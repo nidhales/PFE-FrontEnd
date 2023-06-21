@@ -29,17 +29,6 @@ const CardWrapperPrimary = styled(Card)(
 `
 );
 
-const CardWrapperSecondary = styled(Card)(
-  ({ theme }) => `
-      background: ${theme.colors.alpha.black[10]};
-      color: ${theme.colors.alpha.black[100]};
-      padding: ${theme.spacing(2)};
-      border-radius: ${theme.general.borderRadiusXl};
-      border-top-left-radius: ${theme.general.borderRadius};
-      max-width: 380px;
-      display: inline-flex;
-`
-);
 const Input = styled('input')({
   display: 'none'
 });

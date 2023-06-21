@@ -75,9 +75,11 @@ export const solutionApi = createApi({
       AddSolutionToErrorRequest
     >({
       query: (body) => ({
-        url: `/solution/${body.id}/solutions`,
+        url: `/solution/${body.userId}/${body.id}/solutions`,
         method: 'POST',
         body: {
+          userId: body.userId,
+          id: body.id,
           code: body.code,
           guide: body.guide
         }

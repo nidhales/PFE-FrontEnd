@@ -17,7 +17,6 @@ import {
 import Footer from 'src/components/Footer';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   useAddArticleMutation,
   useDeleteArticleMutation,
@@ -28,130 +27,6 @@ import { theme } from 'src/shared/utils/theme';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import CustomModal from 'src/components/CustomModal/CustomModal';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-
-// function SimpleDialog(props) {
-//   const { onClose, selectedValue, open } = props;
-
-//   const handleClose = () => {
-//     onClose(selectedValue);
-//   };
-
-//   const [addArticle] = useAddArticleMutation();
-//   const [articleName, setArticletName] = useState('');
-//   const [articleContent, setArticletContent] = useState('');
-//   const handleaddArticle = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     await addArticle({
-//       ArticleName: articleName,
-//       ArticleContent: articleContent
-//     })
-//       .unwrap()
-//       .then(() => handleClose());
-//   };
-
-//   return (
-//     <Dialog onClose={handleClose} open={open}>
-//       <List sx={{ pt: 1 }}>
-//         <Container maxWidth="lg">
-//           <Grid
-//             container
-//             direction="row"
-//             justifyContent="center"
-//             alignItems="stretch"
-//             spacing={3}
-//           >
-//             <Grid item xs={12}>
-//               <DialogActions>
-//                 <Button onClick={handleClose} color="success">
-//                   <CloseIcon />
-//                 </Button>
-//               </DialogActions>
-//               <Card>
-//                 <CardHeader title="Add Solution" />
-//                 <Divider />
-//                 <form onSubmit={handleaddArticle}>
-//                   <CardContent>
-//                     <Card sx={{ minWidth: 275 }}>
-//                       <CardContent>
-//                         <InputLabel
-//                           sx={{
-//                             fontWeight: 'bold',
-//                             fontStyle: 'italic',
-//                             marginTop: 1,
-//                             color: '#000000'
-//                           }}
-//                           htmlFor="score"
-//                         >
-//                           Article Name
-//                         </InputLabel>
-
-//                         <TextField
-//                           color="success"
-//                           fullWidth
-//                           type="text"
-//                           name="score"
-//                           id="name"
-//                           variant="outlined"
-//                           size="small"
-//                           value={articleName}
-//                           onChange={(e) => {
-//                             setArticletName(e.target.value);
-//                           }}
-//                         />
-//                         <InputLabel
-//                           sx={{
-//                             fontWeight: 'bold',
-//                             fontStyle: 'italic',
-//                             marginTop: 1,
-//                             color: '#000000'
-//                           }}
-//                           htmlFor="email"
-//                         >
-//                           Article Content
-//                         </InputLabel>
-//                         <TextField
-//                           color="success"
-//                           fullWidth
-//                           multiline
-//                           type="text"
-//                           name="code"
-//                           id="email"
-//                           variant="outlined"
-//                           size="small"
-//                           value={articleContent}
-//                           onChange={(e) => {
-//                             setArticletContent(e.target.value);
-//                           }}
-//                         />
-//                       </CardContent>
-//                     </Card>
-//                   </CardContent>
-//                   <Button
-//                     variant="contained"
-//                     color="success"
-//                     sx={{
-//                       margin: 2
-//                     }}
-//                     type="submit"
-//                   >
-//                     Add Article
-//                   </Button>
-//                 </form>
-//               </Card>
-//             </Grid>
-//           </Grid>
-//         </Container>
-//         <Footer />
-//       </List>
-//     </Dialog>
-//   );
-// }
-// SimpleDialog.propTypes = {
-//   onClose: PropTypes.func.isRequired,
-//   open: PropTypes.bool.isRequired,
-//   selectedValue: PropTypes.string.isRequired
-// };
 function Article() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -175,19 +50,21 @@ function Article() {
     setOpenUpdate(false);
   };
 
-  // API Calls
+  // Get Articles
   const { data: articles, isLoading, error } = useGetAllArticlesQuery();
+  // Delete Article
   const [deleteArticle] = useDeleteArticleMutation();
+  // Update Article
   const [updateArticle, { isSuccess: updateArticleSuccess }] =
     useUpdateArticleMutation();
+  // Add Article
   const [addArticle, { isSuccess: addArticleSuccess }] =
     useAddArticleMutation();
-
   // delete handler
   const handleDeleteArticle = async (articleId: string) => {
     await deleteArticle({ id: articleId });
   };
-
+  //Submit handler
   const handleSubmitModal = async (formFields, articleId: string) => {
     if (openAdd) {
       await addArticle({

@@ -26,7 +26,7 @@ import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
 import axios, { AxiosResponse } from 'axios';
-import { SearchResult } from './searchinterface';
+import { SearchResult, SearchResultResponse } from './searchinterface';
 import { Link } from 'react-router-dom';
 import { IError } from 'src/models/ErrorModel';
 
@@ -82,11 +82,19 @@ function HeaderSearch() {
       }
 
       try {
-        const response: AxiosResponse<IError[]> = await axios.post(
+        const response: AxiosResponse<SearchResultResponse[]> = await axios.post(
           'http://localhost:3000/error/search',
           { name: query }
         );
-        const searchResults: IError[] = response.data;
+        const searchResults: IError[] = response.data.map((result) => ({
+          id: result._id,
+          ErrorName: result.ErrorName,
+          ErrorDescription: result.ErrorDescription,
+          solutions: result.solutions,
+          tags: result.tags,
+          categories: result.categories,
+          user: result.user
+        }));
 
         setSearchResults(searchResults);
       } catch (error) {
@@ -98,11 +106,9 @@ function HeaderSearch() {
   };
   const [open, setOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -169,7 +175,11 @@ function HeaderSearch() {
               <Divider sx={{ my: 1 }} />
               {searchResults.map((result: SearchResult) => (
                 <List disablePadding key={result.id}>
-                  <ListItem button component={Link} to={`/result/${result.id}`}>
+                  <ListItem
+                    button
+                    component={Link}
+                    to={`/result/${result?.id}`}
+                  >
                     <Hidden smDown>
                       <ListItemAvatar>
                         <Avatar

@@ -28,7 +28,7 @@ function ManagementUserSettings() {
     setCurrentTab(value);
   };
 
-    const parsedUser: ParsedUser = JSON.parse(localStorage.getItem('user'));
+  const parsedUser: ParsedUser = JSON.parse(localStorage.getItem('user'));
   return (
     <>
       <Helmet>
@@ -59,9 +59,7 @@ function ManagementUserSettings() {
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'activity' && (
-              <ActivityTab parsedUser={parsedUser} />
-            )}
+            {currentTab === 'activity' && <ActivityTab />}
             {currentTab === 'edit_profile' && (
               <EditProfileTab parsedUser={parsedUser} />
             )}

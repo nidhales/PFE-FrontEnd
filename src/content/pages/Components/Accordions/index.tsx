@@ -1,97 +1,56 @@
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect, useState } from 'react';
 
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import {
-  Container,
-  Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  Divider
-} from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Footer from 'src/components/Footer';
+const ChatComponent = () => {
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
 
-function Accordions() {
+  useEffect(() => {
+    const newSocket = new WebSocket('ws://localhost:3000');
+
+    newSocket.onopen = () => {
+      console.log('WebSocket connection established.');
+    };
+
+    newSocket.onmessage = (event) => {
+      const message = event.data;
+      setMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  const sendMessage = (message: string) => {
+    if (socket) {
+      socket.send(message);
+    }
+  };
+
   return (
-    <>
-      <Helmet>
-        <title>Accordions - Components</title>
-      </Helmet>
-      <PageTitleWrapper>
-        <PageTitle
-          heading="Accordions"
-          subHeading="Accordions contain creation flows and allow lightweight editing of an element."
-          docs="https://material-ui.com/components/accordion/"
-        />
-      </PageTitleWrapper>
-      <Container maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
-          <Grid item xs={12}>
-            <Card>
-              <CardHeader title="Basic Example" />
-              <Divider />
-              <CardContent>
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>Accordion 1</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Suspendisse malesuada lacus ex, sit amet blandit leo
-                      lobortis eget.
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                  >
-                    <Typography>Accordion 2</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Suspendisse malesuada lacus ex, sit amet blandit leo
-                      lobortis eget.
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-                <Accordion disabled>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3a-content"
-                    id="panel3a-header"
-                  >
-                    <Typography>Disabled Accordion</Typography>
-                  </AccordionSummary>
-                </Accordion>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      <Footer />
-    </>
+    <div>
+      <h1>Real-time Chat</h1>
+      <div>
+        {messages.map((message, index) => (
+          <div key={index}>{message}</div>
+        ))}
+      </div>
+      <input
+        type="text"
+        placeholder="Type your message"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            const inputElement = e.target as HTMLInputElement;
+            const message = inputElement.value;
+            sendMessage(message);
+            inputElement.value = '';
+          }
+        }}
+      />
+    </div>
   );
-}
+};
 
-export default Accordions;
+export default ChatComponent;

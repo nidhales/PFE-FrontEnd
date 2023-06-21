@@ -32,7 +32,7 @@ import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Label from 'src/components/Label';
 
 function Code() {
-  const [selectedValue, setSelectedValue] = useState([1]);
+  // Learn More Section
   const [showCommentSection, setShowCommentSection] = useState(false);
   const toggleCommentSection = () => {
     setShowCommentSection(!showCommentSection);
@@ -58,17 +58,20 @@ function Code() {
     setOpenUpdate(false);
   };
 
-  // API Calls
+  // Get Code
   const { data: codes, isLoading, error } = useGetAllCodesQuery();
+  // Delete Code
   const [deleteCode] = useDeleteCodeMutation();
+  // Update Code
   const [updateCode, { isSuccess: updateCodeSuccess }] =
     useUpdateCodeMutation();
+  // Add Code
   const [addCode, { isSuccess: addCodeSuccess }] = useAddCodeMutation();
   // delete handler
   const handleDeleteCode = async (codeId: string) => {
     await deleteCode({ id: codeId });
   };
-
+  // Submit handler
   const handleSubmitModal = async (formFields, codeId: string) => {
     if (openAdd) {
       await addCode({
