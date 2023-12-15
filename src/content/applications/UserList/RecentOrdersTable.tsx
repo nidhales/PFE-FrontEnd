@@ -302,6 +302,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       name: 'image',
                       type: 'text',
                       required: true
+                    },
+                    {
+                      label: 'Badge',
+                      name: 'badge',
+                      type: 'text',
+                      required: true
                     }
                   ]}
                   action="Update"

@@ -1,34 +1,20 @@
 import { Helmet } from 'react-helmet-async';
-import PropTypes from 'prop-types';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
   Container,
   Grid,
   Card,
-  CardHeader,
   CardContent,
   Divider,
   CardActions,
   Typography,
   IconButton,
-  Dialog,
-  List,
-  DialogActions,
-  InputLabel,
-  TextField,
   CircularProgress,
   Tooltip
 } from '@mui/material';
 import Footer from 'src/components/Footer';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import Button from '@mui/material/Button';
-import { useEffect, useState } from 'react';
-import SidebarLayout from 'src/layouts/SidebarLayout';
-import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { ISubject } from 'src/models/SubjectModel';
+import { useState } from 'react';
 import {
   useAddSubjectMutation,
   useDeleteSubjectMutation,
@@ -124,9 +110,6 @@ function Subject() {
                           {subject.subjectName}
                         </Typography>
                       </CardContent>
-                      <CardActions>
-                        <Button size="small">Learn More</Button>
-                      </CardActions>
                     </Card>
                     <CardActions disableSpacing>
                       <Tooltip title="Edit Order" arrow>

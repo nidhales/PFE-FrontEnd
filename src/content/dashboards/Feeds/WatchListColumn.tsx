@@ -127,11 +127,11 @@ function WatchListColumn() {
             >
               <Box display="flex" alignItems="center">
                 <AvatarWrapper>
-                  <img alt="BTC" src={error.user.image} />{' '}
+                  <img alt="BTC" src={error?.user?.image} />{' '}
                 </AvatarWrapper>
                 <Box>
                   <Typography variant="h4" noWrap>
-                    {error.user.FirstName} {error.user.LastName}
+                    {error?.user?.FirstName} {error?.user?.LastName}
                   </Typography>
                 </Box>
               </Box>

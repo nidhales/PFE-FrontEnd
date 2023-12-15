@@ -365,6 +365,12 @@ function Error() {
                   name: 'ErrorDescription',
                   type: 'text',
                   required: true
+                },
+                {
+                  label: 'Tag',
+                  name: 'Tag  ',
+                  type: 'text',
+                  required: true
                 }
               ]}
               action={openAdd ? 'Add' : 'Update'}
